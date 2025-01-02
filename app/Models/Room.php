@@ -9,6 +9,9 @@ class Room extends Model
     protected $table = 'rooms';
     protected $fillable = [
         'name',
-        'play_id'
+        'rows',
+        'cols',
+        'seats',
+        'play_id',
     ];
 }
