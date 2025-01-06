@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Room;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class RoomController extends Controller
 {
@@ -46,7 +47,14 @@ class RoomController extends Controller
      */
     public function show(Room $room)
     {
-        return response()->json($room);
+        $plays = DB::table('schedules')
+            ->join('plays', 'schedules.play_id', '=', 'plays.id')
+            ->join('rooms', 'schedules.room_id', '=', 'rooms.id')
+            ->where('rooms.id', $room->id)
+            ->select('plays.id', 'plays.title', 'schedules.day', 'schedules.start_time', 'schedules.end_time')
+            ->get();
+            
+        return response()->json(['room' => $room, 'plays' => $plays]);
     }
 
     /**

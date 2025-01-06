@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Company;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CompanyController extends Controller
 {
@@ -32,9 +33,10 @@ class CompanyController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Company $Company)
+    public function show(Company $company)
     {
-        return response()->json(['company' => $Company]);
+        $plays = DB::table('plays')->where('company_id', $company->id)->get();
+        return response()->json(['company' => $company, 'plays' => $plays]);
     }
 
     /**
@@ -50,12 +52,24 @@ class CompanyController extends Controller
         return response()->json(['success' => true]);
     }
 
+    public function edit(Company $company)
+    {
+        return response()->json($company);
+    }
+
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Company $Company)
+    public function destroy(Company $company)
     {
-        $Company->delete();
+        DB::table('schedules')->whereIn('play_id', function ($query) use ($company) {
+            $query->select('id')
+                ->from('plays')
+                ->where('company_id', $company->id);
+        })->delete();
+        DB::table('plays')->where('company_id', $company->id)->delete();
+
+        $company->delete();
         return response()->noContent();
     }
 }
