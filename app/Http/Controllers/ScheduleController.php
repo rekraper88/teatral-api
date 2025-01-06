@@ -13,7 +13,12 @@ class ScheduleController extends Controller
      */
     public function index()
     {
-        //
+        $schedules = DB::table('schedules')
+            ->join('plays', 'schedules.play_id', '=', 'plays.id')
+            ->select('schedules.*', 'plays.title')
+            ->orderBy('day', 'asc')
+            ->get();
+        return response()->json($schedules);
     }
 
     /**
