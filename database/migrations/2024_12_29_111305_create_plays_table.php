@@ -21,7 +21,7 @@ return new class extends Migration
             // $table->unsignedBigInteger('room_id');
             $table->unsignedBigInteger('company_id');
 
-            $table->foreign('room_id')->references('id')->on('rooms');
+            // $table->foreign('room_id')->references('id')->on('rooms');
             $table->foreign('company_id')->references('id')->on('rooms');
             $table->timestamps();
         });
