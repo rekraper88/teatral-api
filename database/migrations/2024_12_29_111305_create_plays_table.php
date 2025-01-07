@@ -18,7 +18,7 @@ return new class extends Migration
             $table->text('author');
             $table->text('duration');
 
-            $table->unsignedBigInteger('room_id');
+            // $table->unsignedBigInteger('room_id');
             $table->unsignedBigInteger('company_id');
 
             $table->foreign('room_id')->references('id')->on('rooms');

@@ -11,9 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('plays', function (Blueprint $table) {
-            $table->dropConstrainedForeignId('room_id');
-            $table->dropColumn('room_id');
+        Schema::create('cartelera', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('play_id');
+
+            $table->foreign('play_id')->references('id')->on('plays');
+            $table->timestamps();
         });
     }
 
@@ -22,7 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('plays', function (Blueprint $table) {
-        });
+        Schema::dropIfExists('cartelera');
     }
 };

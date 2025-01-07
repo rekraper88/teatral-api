@@ -13,9 +13,12 @@ class PlayController extends Controller
      */
     public function index()
     {
-        return response()->json(Play::all());
+        $plays = DB::table('plays')
+            ->leftJoin('cartelera', 'plays.id', '=', 'cartelera.play_id')
+            ->select('plays.*', DB::raw('cartelera.play_id AS is_in_cartelera'), DB::raw('cartelera.id AS cartelera_id'))
+            ->get();
+        return response()->json($plays);
     }
-
     /**
      * Show the form for creating a new resource.
      */
