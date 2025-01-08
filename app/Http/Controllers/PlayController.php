@@ -110,7 +110,6 @@ class PlayController extends Controller
      */
     public function destroy(Play $play)
     {
-        DB::table('schedules')->where('play_id', $play->id)->delete();
         $play->delete();
         return response()->noContent();
     }
